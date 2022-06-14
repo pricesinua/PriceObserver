@@ -1,0 +1,10 @@
+{
+    "folders": [
+        {
+            "path": "../../PriceObserver.Api"
+        },
+        {
+            "path": "../../PriceObserver.Persistance"
+        },
+    ]
+}

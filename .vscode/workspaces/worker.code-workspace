@@ -1,0 +1,10 @@
+{
+    "folders": [
+        {
+            "path": "../../PriceObserver.Worker"
+        },
+        {
+            "path": "../../PriceObserver.Persistance"
+        },
+    ]
+}
