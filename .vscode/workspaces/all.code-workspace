@@ -4,7 +4,7 @@
             "path": "../../"
         },
         {
-            "path": "../../PriceObserver.Api"
+            "path": "../../PriceObserver.WebApi"
         },
         {
             "path": "../../PriceObserver.Worker"

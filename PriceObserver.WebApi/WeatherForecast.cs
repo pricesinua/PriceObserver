@@ -1,4 +1,4 @@
-namespace PriceObserver.Api;
+namespace PriceObserver.WebApi;
 
 public class WeatherForecast
 {
