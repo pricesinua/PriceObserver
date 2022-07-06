@@ -4,7 +4,6 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-PriceObserver.Worker-FC799EED-C5C9-4DB9-B5DF-900F83730459</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
