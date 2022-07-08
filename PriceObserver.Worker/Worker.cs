@@ -28,7 +28,7 @@ public class Worker : BackgroundService
 
             var nextTime = cronExpression.GetNextOccurrence(DateTime.UtcNow);
 
-            logger.LogInformation($"Next parse will start at: {nextTime}");
+            logger.LogInformation($"Next parse will start at: {nextTime?.ToLocalTime()}");
 
             await Task.Delay((TimeSpan)(nextTime?.Subtract(DateTime.UtcNow)), cancellationToken);
         }
