@@ -15,9 +15,9 @@ public class Worker : IRecurringAction
         using var scope = serviceProvider.CreateScope();
         var scopedServiceProvider = scope.ServiceProvider;
 
-        this.logger = scopedServiceProvider.GetService<ILogger<Worker>>();
-        this.appDbContext = scopedServiceProvider.GetService<AppDbContext>();
-        this.configuration = scopedServiceProvider.GetService<IConfiguration>();
+        this.logger = scopedServiceProvider.GetRequiredService<ILogger<Worker>>();
+        this.appDbContext = scopedServiceProvider.GetRequiredService<AppDbContext>();
+        this.configuration = scopedServiceProvider.GetRequiredService<IConfiguration>();
     }
 
     public string Cron => configuration.GetValue<string>("ParseSchedule");
