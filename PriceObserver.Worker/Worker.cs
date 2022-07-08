@@ -4,21 +4,11 @@ using PriceObserver.Persistance;
 
 namespace PriceObserver.Worker;
 
-public class Worker : IRecurringAction
+public partial class Worker : IRecurringAction
 {
     private readonly ILogger<Worker> logger;
     private readonly AppDbContext appDbContext;
     private readonly IConfiguration configuration;
-
-    public Worker(IServiceProvider serviceProvider)
-    {
-        using var scope = serviceProvider.CreateScope();
-        var scopedServiceProvider = scope.ServiceProvider;
-
-        this.logger = scopedServiceProvider.GetRequiredService<ILogger<Worker>>();
-        this.appDbContext = scopedServiceProvider.GetRequiredService<AppDbContext>();
-        this.configuration = scopedServiceProvider.GetRequiredService<IConfiguration>();
-    }
 
     public string Cron => configuration.GetValue<string>("ParseSchedule");
 
