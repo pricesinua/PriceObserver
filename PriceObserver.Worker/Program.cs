@@ -3,10 +3,11 @@ using PriceObserver.Persistance;
 using PriceObserver.Worker;
 
 IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
+    .ConfigureServices((host, services) =>
     {
+        var connectionString = host.Configuration.GetValue<string>("ConnectionString");
         services.AddDbContextPool<AppDbContext>(options => {
-            options.UseSqlite("Data Source=appdata.sqlite");
+            options.UseSqlite(connectionString);
         });
         services.AddHostedService<Worker>();
     })
