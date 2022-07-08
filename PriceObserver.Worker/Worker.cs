@@ -6,11 +6,13 @@ public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> logger;
     private readonly AppDbContext appDbContext;
+    private readonly IConfiguration configuration;
 
-    public Worker(ILogger<Worker> logger, AppDbContext appDbContext)
+    public Worker(ILogger<Worker> logger, AppDbContext appDbContext, IConfiguration configuration)
     {
         this.logger = logger;
         this.appDbContext = appDbContext;
+        this.configuration = configuration;
     }
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
