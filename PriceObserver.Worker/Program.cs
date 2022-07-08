@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PriceObserver.Persistance;
+using CronBackgroundServices;
 using PriceObserver.Worker;
 
 internal class Program
@@ -14,7 +15,7 @@ internal class Program
                 {
                     options.UseSqlite(connectionString);
                 });
-                services.AddHostedService<Worker>();
+                services.AddRecurrer<Worker>();
             })
             .Build();
 

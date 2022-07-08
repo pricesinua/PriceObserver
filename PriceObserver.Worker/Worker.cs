@@ -1,9 +1,10 @@
+using CronBackgroundServices;
 using Cronos;
 using PriceObserver.Persistance;
 
 namespace PriceObserver.Worker;
 
-public class Worker : BackgroundService
+public class Worker : IRecurringAction
 {
     private readonly ILogger<Worker> logger;
     private readonly AppDbContext appDbContext;
@@ -19,18 +20,16 @@ public class Worker : BackgroundService
         this.configuration = scopedServiceProvider.GetService<IConfiguration>();
     }
 
-    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+    public string Cron => configuration.GetValue<string>("ParseSchedule");
+
+    public Task Process(CancellationToken stoppingToken)
     {
-        while (!cancellationToken.IsCancellationRequested)
-        {
-            var scheduleExpressionString = configuration.GetValue<string>("ParseSchedule");
-            var cronExpression = CronExpression.Parse(scheduleExpressionString, CronFormat.IncludeSeconds);
+        var cronExpression = CronExpression.Parse(Cron, CronFormat.IncludeSeconds);
 
-            var nextTime = cronExpression.GetNextOccurrence(DateTime.UtcNow);
+        var nextTime = cronExpression.GetNextOccurrence(DateTime.UtcNow);
 
-            logger.LogInformation($"Next parse will start at: {nextTime?.ToLocalTime()}");
+        logger.LogInformation($"Next parse will start at: {nextTime?.ToLocalTime()}");
 
-            await Task.Delay((TimeSpan)(nextTime?.Subtract(DateTime.UtcNow)), cancellationToken);
-        }
+        return Task.CompletedTask;
     }
 }
