@@ -24,7 +24,7 @@ public class Worker : BackgroundService
         while (!cancellationToken.IsCancellationRequested)
         {
             var scheduleExpressionString = configuration.GetValue<string>("ParseSchedule");
-            var cronExpression = CronExpression.Parse(scheduleExpressionString);
+            var cronExpression = CronExpression.Parse(scheduleExpressionString, CronFormat.IncludeSeconds);
 
             var nextTime = cronExpression.GetNextOccurrence(DateTime.UtcNow);
 
