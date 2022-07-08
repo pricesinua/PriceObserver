@@ -1,3 +1,4 @@
+using Cronos;
 using PriceObserver.Persistance;
 
 namespace PriceObserver.Worker;
@@ -22,8 +23,14 @@ public class Worker : BackgroundService
     {
         while (!cancellationToken.IsCancellationRequested)
         {
-            logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            await Task.Delay(1000, cancellationToken);
+            var scheduleExpressionString = configuration.GetValue<string>("ParseSchedule");
+            var cronExpression = CronExpression.Parse(scheduleExpressionString);
+
+            var nextTime = cronExpression.GetNextOccurrence(DateTime.UtcNow);
+
+            logger.LogInformation($"Next parse will start at: {nextTime}");
+
+            await Task.Delay((TimeSpan)(nextTime?.Subtract(DateTime.UtcNow)), cancellationToken);
         }
     }
 }
