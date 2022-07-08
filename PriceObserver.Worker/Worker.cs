@@ -8,11 +8,14 @@ public class Worker : BackgroundService
     private readonly AppDbContext appDbContext;
     private readonly IConfiguration configuration;
 
-    public Worker(ILogger<Worker> logger, AppDbContext appDbContext, IConfiguration configuration)
+    public Worker(IServiceProvider serviceProvider)
     {
-        this.logger = logger;
-        this.appDbContext = appDbContext;
-        this.configuration = configuration;
+        using var scope = serviceProvider.CreateScope();
+        var scopedServiceProvider = scope.ServiceProvider;
+
+        this.logger = scopedServiceProvider.GetService<ILogger<Worker>>();
+        this.appDbContext = scopedServiceProvider.GetService<AppDbContext>();
+        this.configuration = scopedServiceProvider.GetService<IConfiguration>();
     }
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
