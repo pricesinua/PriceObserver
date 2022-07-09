@@ -15,6 +15,8 @@ public partial class Worker : IRecurringAction
 
     public async Task Process(CancellationToken stoppingToken)
     {
+        LogNextParseTime();
+
         var client = new ApiZakazUa.Client();
 
         var stores = await client.GetStoresAsync();
@@ -53,7 +55,10 @@ public partial class Worker : IRecurringAction
 
             logger.LogInformation($"Prices of store {store.Name} succefully snapshotted.");
         }
+    }
 
+    private void LogNextParseTime()
+    {
         var cronExpression = CronExpression.Parse(Cron, CronFormat.IncludeSeconds);
 
         var nextTime = cronExpression.GetNextOccurrence(DateTime.UtcNow);
