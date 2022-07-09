@@ -399,3 +399,6 @@ FodyWeavers.xsd
 
 # Embedded databases
 *.sqlite*
+
+# VSCode
+.vscode
