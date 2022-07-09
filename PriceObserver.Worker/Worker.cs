@@ -53,7 +53,7 @@ public partial class Worker : IRecurringAction
 
             await appDbContext.SaveChangesAsync();
 
-            logger.LogInformation($"Prices of store {store.Name} succefully snapshotted.");
+            logger.LogInformation($"Prices of store {store.Name} snapshotted.");
         }
     }
 
