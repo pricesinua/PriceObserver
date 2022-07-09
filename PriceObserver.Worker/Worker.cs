@@ -39,7 +39,7 @@ public partial class Worker : IRecurringAction
 
                 foreach (var product in products)
                 {
-                    logger.LogTrace($"Processing product: {product.Ean} {product.Title}.");
+                    logger.LogTrace($"Processing product: {product.Ean} {product.Slug}.");
                     appDbContext.PriceStamps.Add(new PriceStamp()
                     {
                         StoreId = store.Id,
