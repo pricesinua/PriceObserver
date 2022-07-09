@@ -11,6 +11,6 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder model)
     {
-        model.Entity<PriceStamp>().HasNoKey();
+        model.Entity<PriceStamp>().HasKey(e => e.Id);
     }
 }
