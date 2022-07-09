@@ -67,7 +67,7 @@ public partial class Worker : IRecurringAction
 
             await appDbContext.SaveChangesAsync();
 
-            logger.LogInformation($"Prices of store {store.Name} snapshotted.");
+            logger.LogInformation($"{storeNumber} of {stores.Count} stores parsed.");
         }
 
         logger.LogInformation($"All {stores.Count} stores parsed.");
