@@ -55,6 +55,9 @@ public partial class Worker : IRecurringAction
 
             logger.LogInformation($"Prices of store {store.Name} snapshotted.");
         }
+
+        logger.LogInformation($"All {stores.Count} stores parsed.");
+        LogNextParseTime();
     }
 
     private void LogNextParseTime()
