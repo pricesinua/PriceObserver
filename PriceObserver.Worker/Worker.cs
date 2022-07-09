@@ -19,8 +19,14 @@ public partial class Worker : IRecurringAction
 
         var stores = await client.GetStoresAsync();
 
+        logger.LogInformation($"Parse of {stores.Count} stores started.");
+
+        var storeNumber = 0;
+
         foreach (var store in stores)
         {
+            storeNumber++;
+
             logger.LogTrace($"Processing store: {store.Id} {store.Name}.");
             var categories = await client.GetCategoriesAsync(store.Id);
 
@@ -44,6 +50,8 @@ public partial class Worker : IRecurringAction
             }
 
             await appDbContext.SaveChangesAsync();
+
+            logger.LogInformation($"Prices of store {store.Name} succefully snapshotted.");
         }
 
         var cronExpression = CronExpression.Parse(Cron, CronFormat.IncludeSeconds);
