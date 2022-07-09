@@ -50,6 +50,6 @@ public partial class Worker : IRecurringAction
 
         var nextTime = cronExpression.GetNextOccurrence(DateTime.UtcNow);
 
-        logger.LogInformation($"Next parse will start at: {nextTime?.ToLocalTime()}");
+        logger.LogInformation($"Next parse will start at: {nextTime?.ToLocalTime()}.");
     }
 }

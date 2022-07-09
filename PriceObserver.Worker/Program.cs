@@ -24,7 +24,7 @@ internal class Program
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
             var environment = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
 
-            logger.LogInformation($"Environment mode: {environment.EnvironmentName}");
+            logger.LogInformation($"Environment mode: {environment.EnvironmentName}.");
 
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             db.Database.Migrate();
