@@ -40,14 +40,28 @@ public partial class Worker : IRecurringAction
                 foreach (var product in products)
                 {
                     logger.LogTrace($"Processing product: {product.Ean} {product.Slug}.");
-                    appDbContext.PriceStamps.Add(new PriceStamp()
+
+                    try
                     {
-                        StoreId = store.Id,
-                        ProductId = product.Ean.GetHashCode(),
-                        Price = product.Price,
-                        Currency = short.Parse(NodaMoney.Currency.FromCode(product.Currency.ToUpper()).Number),
-                        Timestamp = DateTime.UtcNow,
-                    });
+                        var currency = short.Parse(NodaMoney.Currency.FromCode(product.Currency.ToUpper()).Number);
+
+                        appDbContext.PriceStamps.Add(new PriceStamp()
+                        {
+                            StoreId = store.Id,
+                            ProductEan = product.Ean,
+                            Price = product.Price,
+                            Currency = currency,
+                            Timestamp = DateTime.UtcNow,
+                        });
+                    }
+                    catch (System.Exception)
+                    {
+                        logger.LogError($"Failed to create pricestamp for product {product.Slug} from store with id {store.Id}.");
+                    }
+                    finally
+                    {
+                        logger.LogTrace($"Product {product.Ean} {product.Slug} successfully processed.");
+                    }
                 }
             }
 
