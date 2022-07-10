@@ -1,29 +1,27 @@
-using System.Collections.Generic;
 using ApiZakazUa;
 using ApiZakazUa.Resources;
 using CronBackgroundServices;
 using Cronos;
-using PriceObserver.Persistance;
 using PriceObserver.Persistance.Data;
 
 namespace PriceObserver.Worker;
 
-public partial class Worker : IRecurringAction
+public class Worker : WorkerDependencies, IRecurringAction
 {
-    private readonly ILogger<Worker> logger;
-    private readonly AppDbContext appDbContext;
-    private readonly IConfiguration configuration;
-
     public string Cron => configuration.GetValue<string>("ParseSchedule");
 
-
     private Client client;
+
+    public Worker(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+        LogNextParseTime();
+    }
 
     public async Task Process(CancellationToken stoppingToken)
     {
         logger.LogDebug($"Connecting client.");
 
-        var client = new ApiZakazUa.Client();
+        client = new ApiZakazUa.Client();
 
         IReadOnlySet<Store>? stores = null;
 

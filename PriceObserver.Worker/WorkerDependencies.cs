@@ -3,9 +3,13 @@ using PriceObserver.Persistance;
 
 namespace PriceObserver.Worker;
 
-public partial class Worker : IRecurringAction
+public abstract class WorkerDependencies
 {
-    public Worker(IServiceProvider serviceProvider)
+    protected readonly ILogger<Worker> logger;
+    protected readonly AppDbContext appDbContext;
+    protected readonly IConfiguration configuration;
+
+    public WorkerDependencies(IServiceProvider serviceProvider)
     {
         var scope = serviceProvider.CreateScope();
         var scopedServiceProvider = scope.ServiceProvider;
