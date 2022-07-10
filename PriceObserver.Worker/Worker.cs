@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using ApiZakazUa;
+using ApiZakazUa.Resources;
 using CronBackgroundServices;
 using Cronos;
 using PriceObserver.Persistance;
@@ -13,13 +16,27 @@ public partial class Worker : IRecurringAction
 
     public string Cron => configuration.GetValue<string>("ParseSchedule");
 
+
+    private Client client;
+
     public async Task Process(CancellationToken stoppingToken)
     {
-        LogNextParseTime();
+        logger.LogDebug($"Connecting client.");
 
         var client = new ApiZakazUa.Client();
 
-        var stores = await client.GetStoresAsync();
+        IReadOnlySet<Store>? stores = null;
+
+        try
+        {
+            logger.LogDebug($"Fetching stores.");
+            stores = await client.GetStoresAsync();
+        }
+        catch (System.Exception exception)
+        {
+            logger.LogError($"Failed to fetch stores: {exception.Message}.");
+            return;
+        }
 
         logger.LogInformation($"Parse of {stores.Count} stores started.");
 
@@ -30,12 +47,16 @@ public partial class Worker : IRecurringAction
             storeNumber++;
 
             logger.LogTrace($"Processing store: {store.Id} {store.Name}.");
+
             var categories = await client.GetCategoriesAsync(store.Id);
+            if (categories is null) continue;
 
             foreach (var category in categories)
             {
                 logger.LogTrace($"Processing category: {category.Id} {category.Title}.");
+
                 var products = await client.GetProductsAsync(store.Id, category.Id);
+                if (products is null) continue;
 
                 foreach (var product in products)
                 {
@@ -57,10 +78,6 @@ public partial class Worker : IRecurringAction
                     catch (System.Exception)
                     {
                         logger.LogError($"Failed to create pricestamp for product {product.Slug} from store with id {store.Id}.");
-                    }
-                    finally
-                    {
-                        logger.LogTrace($"Product {product.Ean} {product.Slug} successfully processed.");
                     }
                 }
             }
