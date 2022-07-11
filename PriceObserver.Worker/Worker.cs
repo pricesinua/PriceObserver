@@ -14,11 +14,12 @@ public class Worker : WorkerDependencies, IRecurringAction
 
     public Worker(IServiceProvider serviceProvider) : base(serviceProvider)
     {
-        LogNextParseTime();
     }
 
     public async Task Process(CancellationToken stoppingToken)
     {
+        LogNextParseTime();
+
         logger.LogDebug($"Connecting client.");
 
         client = new ApiZakazUa.Client();
