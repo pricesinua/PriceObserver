@@ -26,8 +26,10 @@ internal class Program
 
             logger.LogInformation($"Environment mode: {environment.EnvironmentName}.");
 
-            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            db.Database.Migrate();
+            var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+            appDbContext.Database.EnsureCreated();
+            appDbContext.Database.Migrate();
         }
 
         await host.RunAsync();
