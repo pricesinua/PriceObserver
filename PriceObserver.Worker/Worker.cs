@@ -10,7 +10,7 @@ public class Worker : WorkerDependencies, IRecurringAction
 {
     public string Cron => configuration.GetValue<string>("ParseSchedule");
 
-    private Client client;
+    private readonly Client client = new ApiZakazUa.Client();
 
     public Worker(IServiceProvider serviceProvider) : base(serviceProvider)
     {
@@ -19,10 +19,6 @@ public class Worker : WorkerDependencies, IRecurringAction
     public async Task Process(CancellationToken stoppingToken)
     {
         LogNextParseTime();
-
-        logger.LogDebug($"Connecting client.");
-
-        client = new ApiZakazUa.Client();
 
         IReadOnlySet<Store>? stores = null;
 
