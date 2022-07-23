@@ -65,7 +65,7 @@ public class Worker : WorkerDependencies, IRecurringAction
                     {
                         var currency = short.Parse(NodaMoney.Currency.FromCode(product.Currency.ToUpper()).Number);
 
-                        appDbContext.PriceStamps.Add(new PriceStamp()
+                        appDbContext.Pricestamps.Add(new Pricestamp()
                         {
                             StoreId = store.Id,
                             ProductEan = product.Ean,

@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace PriceObserver.Persistance.Data;
 
-public class PriceStamp
+public class Pricestamp
 {
     public long Id { get; set; }
     public string ProductEan { get; set; }
