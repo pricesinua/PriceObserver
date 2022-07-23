@@ -33,6 +33,12 @@ public class Worker : WorkerDependencies, IRecurringAction
             return;
         }
 
+        if (stores == null)
+        {
+            logger.LogInformation("No available stores. Skipping parse.");
+            return;
+        }
+
         logger.LogInformation($"Parse of {stores.Count} stores started.");
 
         var storeNumber = 0;
